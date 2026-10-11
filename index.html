@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Nitya Vodela</title>
+<script>
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem('theme'); } catch (e) {}
+    if (t !== 'light' && t !== 'dark') {
+      t = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    document.documentElement.setAttribute('data-theme', t);
+  })();
+</script>
+<link rel="stylesheet" href="styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+<nav class="nav" aria-label="Sections">
+  <button type="button" data-target="profile" aria-current="true">Profile</button>
+  <button type="button" data-target="work">Work</button>
+  <button type="button" data-target="writing">Writing</button>
+  <button type="button" data-target="contact">Contact</button>
+  <div class="progress" aria-hidden="true"><span class="bar"><i id="bar"></i></span><span id="pct">0%</span></div>
+  <button type="button" class="theme" id="theme">Dark</button>
+</nav>
+
+<main class="track" id="track" tabindex="0" aria-label="Portfolio, scrolls sideways">
+  <section class="panel" id="profile" data-section="profile">
+    <div class="profile-copy" data-detail="profile" tabindex="0">
+      <h1>Nitya Vodela</h1>
+      <p class="role">I&rsquo;ve built products, designed them, and specified them. Now I want to lead them, with responsible AI at the center.</p>
+      <ul class="facts">
+        <li>Hyderabad, India</li>
+        <li>MS Computer Science, UT Arlington</li>
+        <li>ISO 27001 Lead Auditor</li>
+      </ul>
+    </div>
+    <p class="hint">Hover my name to read more. Scroll sideways; the heat warms as you travel.</p>
+  </section>
+
+  <section class="panel" id="work" data-section="work">
+    <div class="work-head"><h2>Selected work</h2></div>
+    <article class="project" data-detail="redline" tabindex="0">
+      <p class="status">Live</p>
+      <h3>Redline</h3>
+      <p class="desc">A RAG-based checker that scores any text for ethics and safety risk, then rewrites it safely.</p>
+    </article>
+    <article class="project" data-detail="chomp" tabindex="0">
+      <p class="status">In progress</p>
+      <h3>Chomp</h3>
+      <p class="desc">An AI chat app that cuts decision fatigue about what to cook, and tracks what you actually cook again.</p>
+    </article>
+    <article class="project" data-detail="afterglow" tabindex="0">
+      <p class="status">Interactive</p>
+      <h3>Afterglow</h3>
+      <p class="desc">A heat field that turns movement and sound into thermal color. The visual language of this site.</p>
+    </article>
+    <article class="project" data-detail="dsl" tabindex="0">
+      <p class="status">Digital Stamp Library</p>
+      <h3>DSL</h3>
+      <p class="desc">Stamps designed in Figma and presented as a library, open to customisation.</p>
+    </article>
+    <article class="project" data-detail="graphic" tabindex="0">
+      <p class="status">Gallery</p>
+      <h3>Graphic</h3>
+      <p class="desc">Selected graphic design, shown like a museum.</p>
+    </article>
+  </section>
+
+  <section class="panel" id="writing" data-section="writing">
+    <div class="work-head">
+      <h2>Writing</h2>
+      <p class="lede">Published on Medium, on the combined topic of AI safety and governance.</p>
+      <div class="socials" id="writingLinks"></div>
+    </div>
+    <article class="project" data-detail="safety-governance" tabindex="0">
+      <p class="status">Published on Medium</p>
+      <h3>AI safety &amp; governance</h3>
+      <p class="desc">Writing on how AI systems can be made safe, and how they can be governed.</p>
+    </article>
+  </section>
+
+  <section class="panel" id="contact" data-section="contact">
+    <button class="paper" id="paper" type="button" aria-label="Preview resume"></button>
+    <div class="contact-copy">
+      <div class="contact-main">
+        <h2>Let&rsquo;s talk.</h2>
+        <p>Open to conversations about AI product roles.</p>
+        <a class="mail" href="mailto:vodelan6@gmail.com">vodelan6@gmail.com</a>
+      </div>
+      <div class="contact-side">
+        <div class="socials" id="socials"></div>
+        <div class="c-actions">
+          <button class="cta" id="resumePreviewBtn" type="button">Preview resume</button>
+          <a class="cta" id="resumeDl" href="#">Download resume</a>
+        </div>
+        <p class="fine" id="resumeNote"></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<canvas id="heat" aria-hidden="true"></canvas>
+
+<aside class="detail" id="detail" aria-live="polite">
+  <div class="d-head">
+    <p class="d-status" id="dStatus"></p>
+    <h3 class="d-title" id="dTitle"></h3>
+    <p class="d-summary" id="dSummary"></p>
+  </div>
+  <div class="d-body">
+    <ul class="d-points" id="dPoints"></ul>
+    <div class="d-tags" id="dTags"></div>
+  </div>
+  <div class="d-gallery" id="dGallery"></div>
+  <p class="d-more" id="dMore"></p>
+</aside>
+
+<div class="case" id="case" role="dialog" aria-modal="true" aria-label="Project details" aria-hidden="true">
+  <div class="case-track" id="caseTrack" tabindex="-1"></div>
+  <div class="stage" id="stage" aria-live="polite"></div>
+  <div class="pull" id="pull" aria-hidden="true"><span>Back to portfolio</span></div>
+  <button class="case-back" id="caseBack" type="button" aria-label="Back to portfolio"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 8H3M7.5 3.5L3 8l4.5 4.5"/></svg><span class="lbl">Back to portfolio</span></button>
+</div>
+
+<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Resume preview" aria-hidden="true">
+  <div class="viewer-bar">
+    <a class="cta" id="viewerDl" href="#">Download</a>
+    <button class="cta" id="viewerClose" type="button">Close</button>
+  </div>
+  <div class="viewer-scroll" id="viewerScroll"><div class="viewer-pages" id="viewerPages"></div></div>
+</div>
+
+<div class="hand" id="hand" aria-hidden="true">
+  <div class="hand-in" id="handIn">
+    <svg class="shadow" viewBox="0 0 44 56"><defs><mask id="sm" maskUnits="userSpaceOnUse" x="-20" y="-20" width="90" height="100"><rect x="-20" y="-20" width="90" height="100" fill="#fff"></rect><path d="M13 30.2L13 5C13 2.5 15 1 17 1C19 1 21 2.5 21 5L21 19.5C21.6 19 22.6 18.6 23.6 18.6C26.3 18.6 28.6 20.2 28.8 22.6C29.4 22 30.4 21.7 31.4 21.7C34.2 21.7 36.4 23.4 36.6 26C37.2 25.5 38.1 25.3 39 25.3C41.6 25.3 43.4 27.3 43.4 30L43.4 36C43.4 43 40.5 47.5 37.5 50.5L36 55L20.5 55C20.5 51.5 18.8 49.5 17.5 47.5C14.5 45 10.5 41.5 7.6 37.6C5.6 35 4.6 31.5 5.2 29.4C5.8 27.4 8.4 26.8 9.9 28.6C10.9 29.3 12 30 13 30.2Z" fill="#000"></path></mask></defs><g mask="url(#sm)"><path d="M13 30.2L13 5C13 2.5 15 1 17 1C19 1 21 2.5 21 5L21 19.5C21.6 19 22.6 18.6 23.6 18.6C26.3 18.6 28.6 20.2 28.8 22.6C29.4 22 30.4 21.7 31.4 21.7C34.2 21.7 36.4 23.4 36.6 26C37.2 25.5 38.1 25.3 39 25.3C41.6 25.3 43.4 27.3 43.4 30L43.4 36C43.4 43 40.5 47.5 37.5 50.5L36 55L20.5 55C20.5 51.5 18.8 49.5 17.5 47.5C14.5 45 10.5 41.5 7.6 37.6C5.6 35 4.6 31.5 5.2 29.4C5.8 27.4 8.4 26.8 9.9 28.6C10.9 29.3 12 30 13 30.2Z" fill="rgba(0,0,0,0.3)" transform="translate(2 5)"></path></g></svg>
+    <div class="glass"></div>
+    <svg viewBox="0 0 44 56">
+      <defs>
+        <clipPath id="hc"><path d="M13 30.2L13 5C13 2.5 15 1 17 1C19 1 21 2.5 21 5L21 19.5C21.6 19 22.6 18.6 23.6 18.6C26.3 18.6 28.6 20.2 28.8 22.6C29.4 22 30.4 21.7 31.4 21.7C34.2 21.7 36.4 23.4 36.6 26C37.2 25.5 38.1 25.3 39 25.3C41.6 25.3 43.4 27.3 43.4 30L43.4 36C43.4 43 40.5 47.5 37.5 50.5L36 55L20.5 55C20.5 51.5 18.8 49.5 17.5 47.5C14.5 45 10.5 41.5 7.6 37.6C5.6 35 4.6 31.5 5.2 29.4C5.8 27.4 8.4 26.8 9.9 28.6C10.9 29.3 12 30 13 30.2Z"></path></clipPath>
+        <linearGradient id="body" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" style="stop-color: var(--sheen-a)"></stop>
+          <stop offset="0.5" style="stop-color: var(--tint)"></stop>
+          <stop offset="1" style="stop-color: var(--sheen-b)"></stop>
+        </linearGradient>
+        <linearGradient id="rim" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#8fe9ff" stop-opacity="0.95"></stop>
+          <stop offset="0.55" stop-color="#ffffff" stop-opacity="0.55"></stop>
+          <stop offset="1" stop-color="#ff9ad8" stop-opacity="0.8"></stop>
+        </linearGradient>
+      </defs>
+      <path d="M13 30.2L13 5C13 2.5 15 1 17 1C19 1 21 2.5 21 5L21 19.5C21.6 19 22.6 18.6 23.6 18.6C26.3 18.6 28.6 20.2 28.8 22.6C29.4 22 30.4 21.7 31.4 21.7C34.2 21.7 36.4 23.4 36.6 26C37.2 25.5 38.1 25.3 39 25.3C41.6 25.3 43.4 27.3 43.4 30L43.4 36C43.4 43 40.5 47.5 37.5 50.5L36 55L20.5 55C20.5 51.5 18.8 49.5 17.5 47.5C14.5 45 10.5 41.5 7.6 37.6C5.6 35 4.6 31.5 5.2 29.4C5.8 27.4 8.4 26.8 9.9 28.6C10.9 29.3 12 30 13 30.2Z" fill="url(#body)"></path>
+      <g clip-path="url(#hc)">
+        <path d="M13 30.2L13 5C13 2.5 15 1 17 1C19 1 21 2.5 21 5L21 19.5C21.6 19 22.6 18.6 23.6 18.6C26.3 18.6 28.6 20.2 28.8 22.6C29.4 22 30.4 21.7 31.4 21.7C34.2 21.7 36.4 23.4 36.6 26C37.2 25.5 38.1 25.3 39 25.3C41.6 25.3 43.4 27.3 43.4 30L43.4 36C43.4 43 40.5 47.5 37.5 50.5L36 55L20.5 55C20.5 51.5 18.8 49.5 17.5 47.5C14.5 45 10.5 41.5 7.6 37.6C5.6 35 4.6 31.5 5.2 29.4C5.8 27.4 8.4 26.8 9.9 28.6C10.9 29.3 12 30 13 30.2Z" fill="none" stroke="rgba(10,20,50,0.10)" stroke-width="2" transform="translate(-1.3 -1.3)"></path>
+        <path d="M13 30.2L13 5C13 2.5 15 1 17 1C19 1 21 2.5 21 5L21 19.5C21.6 19 22.6 18.6 23.6 18.6C26.3 18.6 28.6 20.2 28.8 22.6C29.4 22 30.4 21.7 31.4 21.7C34.2 21.7 36.4 23.4 36.6 26C37.2 25.5 38.1 25.3 39 25.3C41.6 25.3 43.4 27.3 43.4 30L43.4 36C43.4 43 40.5 47.5 37.5 50.5L36 55L20.5 55C20.5 51.5 18.8 49.5 17.5 47.5C14.5 45 10.5 41.5 7.6 37.6C5.6 35 4.6 31.5 5.2 29.4C5.8 27.4 8.4 26.8 9.9 28.6C10.9 29.3 12 30 13 30.2Z" fill="none" stroke="url(#rim)" stroke-width="2.6"></path>
+        <g fill="none" stroke-linecap="round">
+          <path d="M14.6 6 L14.6 26" stroke="#fff" stroke-opacity="0.85" stroke-width="0.9"></path>
+          <path d="M24 20.3 C25.8 20 27.4 20.8 28 22" stroke="#fff" stroke-opacity="0.8" stroke-width="0.8"></path>
+          <path d="M31.8 23.4 C33.4 23.3 34.8 24 35.4 25.2" stroke="#fff" stroke-opacity="0.8" stroke-width="0.8"></path>
+          <path d="M39.2 27 C40.4 27 41.4 27.6 41.8 28.6" stroke="#fff" stroke-opacity="0.7" stroke-width="0.8"></path>
+          <path d="M7 30.6 C6.2 32 6.4 33.6 7.4 35" stroke="#fff" stroke-opacity="0.7" stroke-width="0.8"></path>
+          <g stroke="#fff" stroke-opacity="0.32" stroke-width="0.6">
+            <path d="M14.2 12.2 Q17 13 19.8 12.2"></path>
+            <path d="M14.2 17 Q17 17.8 19.8 17"></path>
+            <path d="M21.2 19.8 C21.7 24 21.4 28 20.6 31.5"></path>
+            <path d="M28.8 22.8 C28.4 26 28 29 27.4 32"></path>
+            <path d="M36.6 26.2 C36.2 29 35.7 31.5 35 34"></path>
+            <path d="M9 32.6 C10.6 33.4 11.8 34.4 12.8 35.8"></path>
+          </g>
+        </g>
+      </g>
+      <path d="M13 30.2L13 5C13 2.5 15 1 17 1C19 1 21 2.5 21 5L21 19.5C21.6 19 22.6 18.6 23.6 18.6C26.3 18.6 28.6 20.2 28.8 22.6C29.4 22 30.4 21.7 31.4 21.7C34.2 21.7 36.4 23.4 36.6 26C37.2 25.5 38.1 25.3 39 25.3C41.6 25.3 43.4 27.3 43.4 30L43.4 36C43.4 43 40.5 47.5 37.5 50.5L36 55L20.5 55C20.5 51.5 18.8 49.5 17.5 47.5C14.5 45 10.5 41.5 7.6 37.6C5.6 35 4.6 31.5 5.2 29.4C5.8 27.4 8.4 26.8 9.9 28.6C10.9 29.3 12 30 13 30.2Z" fill="none" stroke="var(--hand-edge)" stroke-width="0.8" stroke-linejoin="round"></path>
+    </svg>
+  </div>
+</div>
+<script src="content.js" defer></script>
+<script src="script.js" defer></script>
+</body>
+</html>
